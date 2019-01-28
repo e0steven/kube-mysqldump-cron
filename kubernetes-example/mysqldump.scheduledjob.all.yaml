@@ -12,7 +12,7 @@ spec:
             role: mysqldump
           containers:
           - name: mysqldump
-            image: camil/mysqldump
+            image: e0steven/kubernetes-mysqldump-fuse-cron
             env:
               - name: ALL_DATABASES
                 valueFrom:
@@ -35,11 +35,4 @@ spec:
                     name: mysqldump
                     key: dbpass
             imagePullPolicy: Always
-            volumeMounts:
-              - mountPath: /mysqldump
-                name: mysqldump
-          volumes:
-            - name: mysqldump
-              hostPath:
-                path: /home/core/mysqldump
           restartPolicy: OnFailure
