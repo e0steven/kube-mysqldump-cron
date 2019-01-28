@@ -7,5 +7,6 @@ FROM alpine:3.6
 RUN apk add --update --no-cache mysql-client bash openssh-client ca-certificates fuse && rm -rf /tmp/*
 COPY --from=0 /go/bin/gcsfuse /usr/local/bin
 COPY dump.sh /
+RUN mkdir mysqldump
 RUN chmod +x /dump.sh
 ENTRYPOINT ["/dump.sh"]
