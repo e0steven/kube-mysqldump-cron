@@ -13,6 +13,18 @@ spec:
           containers:
           - name: mysqldump
             image: e0steven/kubernetes-mysqldump-fuse-cron
+            securityContext:
+              privileged: true
+              capabilities:
+                add:
+                  - SYS_ADMIN
+            lifecycle:
+              postStart:
+                exec:
+                  command: ["gcsfuse", "-o", "nonempty", "your-bucket-name", "/mysqldump"]
+              preStop:
+                exec:
+                  command: ["fusermount", "-u", "/mysqldump"]
             env:
               - name: ALL_DATABASES
                 valueFrom:
