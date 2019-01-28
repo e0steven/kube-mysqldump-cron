@@ -1,8 +1,11 @@
-FROM alpine:3.4
-RUN apk add --update mysql-client bash openssh-client && rm -rf /var/cache/apk/*
+FROM golang:1.10.0-alpine 
+RUN apk add --no-cache git
+ENV GOPATH /go 
+RUN go get -u github.com/googlecloudplatform/gcsfuse
+
+FROM alpine:3.6 
+RUN apk add --update --no-cache mysql-client bash openssh-client ca-certificates fuse && rm -rf /tmp/*
+COPY --from=0 /go/bin/gcsfuse /usr/local/bin
 COPY dump.sh /
-COPY import.sh /
-
-RUN chmod +x /dump.sh /import.sh
-
+RUN chmod +x /dump.sh
 ENTRYPOINT ["/dump.sh"]
