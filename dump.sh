@@ -37,3 +37,6 @@ for db in $databases; do
     fi
 done	
 fi
+while true; do 
+	sleep 30
+done 
